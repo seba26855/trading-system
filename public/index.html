@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NEXUS AI TERMINAL</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<<script src="https://unpkg.com/lightweight-charts@5.0.0/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+
+<body>
+
+<div class="background-glow"></div>
+
+<aside class="sidebar">
+
+<div class="logo">
+<h1>NEXUS</h1>
+<span>AI TERMINAL</span>
+</div>
+
+<div class="menu-title">
+MARKETS
+</div>
+
+<button class="asset-btn active" data-symbol="BTCUSDT">BTC</button>
+<button class="asset-btn" data-symbol="ETHUSDT">ETH</button>
+<button class="asset-btn" data-symbol="BNBUSDT">BNB</button>
+<button class="asset-btn" data-symbol="SOLUSDT">SOL</button>
+<button class="asset-btn" data-symbol="XRPUSDT">XRP</button>
+<button class="asset-btn" data-symbol="ADAUSDT">ADA</button>
+
+</aside>
+
+<main class="main">
+
+<section class="hero">
+
+<div>
+
+<div class="hero-label">
+LIVE MARKET INTELLIGENCE
+</div>
+
+<h1 id="heroSymbol">
+BTCUSDT
+</h1>
+
+<div id="heroPrice" class="hero-price">
+--
+</div>
+
+</div>
+
+<div class="hero-right">
+
+<div class="status-dot"></div>
+
+<span>
+LIVE DATA
+</span>
+
+</div>
+
+</section>
+
+<section class="signal-panel card">
+
+<div class="panel-header">
+AI MARKET ANALYST
+</div>
+
+<div class="signal-row">
+
+<div>
+<div class="small-label">SIGNAL</div>
+<div id="signal" class="signal-value hold">HOLD</div>
+</div>
+
+<div>
+<div class="small-label">CONFIDENCE</div>
+<div id="score" class="big-number">--</div>
+</div>
+
+<div>
+<div class="small-label">REGIME</div>
+<div id="regime" class="big-number">--</div>
+</div>
+
+<div>
+<div class="small-label">RISK</div>
+<div id="risk" class="big-number">--</div>
+</div>
+
+</div>
+
+<div class="confidence-bar">
+<div id="confidenceFill"></div>
+</div>
+
+<div id="summary" class="summary">
+Caricamento...
+</div>
+
+<div class="recommendation-box">
+
+<div class="recommendation-title">
+AI RECOMMENDATION
+</div>
+
+<div id="recommendation">
+...
+</div>
+
+</div>
+
+</section>
+
+<section class="metrics">
+
+<div class="metric-card">
+<div class="metric-title">RSI</div>
+<div id="rsi" class="metric-value">--</div>
+</div>
+
+<div class="metric-card">
+<div class="metric-title">EMA20</div>
+<div id="ema20" class="metric-value">--</div>
+</div>
+
+<div class="metric-card">
+<div class="metric-title">EMA50</div>
+<div id="ema50" class="metric-value">--</div>
+</div>
+
+<div class="metric-card">
+<div class="metric-title">EMA200</div>
+<div id="ema200" class="metric-value">--</div>
+</div>
+
+<div class="metric-card">
+<div class="metric-title">VOLATILITY</div>
+<div id="volatility" class="metric-value">--</div>
+</div>
+
+</section>
+
+<section class="chart-card card">
+
+<div class="panel-header">
+PRICE ACTION
+</div>
+
+<div id="chart"></div>
+
+</section>
+
+<section class="bottom-grid">
+
+<div class="card">
+
+<div class="panel-header">
+WHY THIS SIGNAL?
+</div>
+
+<ul id="reasons"></ul>
+
+</div>
+
+<div class="card">
+
+<div class="panel-header">
+BOT PERFORMANCE
+</div>
+
+<div class="bot-grid">
+
+<div>
+Balance
+<strong id="balance">-</strong>
+</div>
+
+<div>
+Equity
+<strong id="equity">-</strong>
+</div>
+
+<div>
+PnL
+<strong id="pnl">-</strong>
+</div>
+
+<div>
+Winrate
+<strong id="winrate">-</strong>
+</div>
+
+<div>
+Trades
+<strong id="trades">-</strong>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>
