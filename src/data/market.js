@@ -2,33 +2,25 @@ const https = require("https");
 
 function request(url) {
 return new Promise((resolve, reject) => {
-const req = https.get(url, (res) => {
-let data = "";
+https
+.get(url, (res) => {
+let body = "";
 
-```
-  res.on("data", (chunk) => {
-    data += chunk;
+    res.on("data", (chunk) => {
+      body += chunk;
+    });
+
+    res.on("end", () => {
+      try {
+        resolve(JSON.parse(body));
+      } catch (error) {
+        reject(error);
+      }
+    });
+  })
+  .on("error", (error) => {
+    reject(error);
   });
-
-  res.on("end", () => {
-    try {
-      const json = JSON.parse(data);
-      resolve(json);
-    } catch (err) {
-      reject(new Error("Invalid JSON response"));
-    }
-  });
-});
-
-req.setTimeout(5000, () => {
-  req.destroy();
-  reject(new Error("Request timeout"));
-});
-
-req.on("error", (err) => {
-  reject(err);
-});
-```
 
 });
 }
@@ -39,33 +31,32 @@ interval = "5",
 limit = 200
 ) {
 const url =
-`https://api.bybit.com/v5/market/kline` +
+"https://api.bybit.com/v5/market/kline" +
 `?category=linear` +
 `&symbol=${symbol}` +
 `&interval=${interval}` +
 `&limit=${limit}`;
 
-const data = await request(url);
+const response = await request(url);
 
 if (
-!data.result ||
-!Array.isArray(data.result.list)
+!response ||
+!response.result ||
+!Array.isArray(response.result.list)
 ) {
-throw new Error(
-data.retMsg || "Invalid Bybit response"
-);
+throw new Error("Invalid Bybit response");
 }
 
-return data.result.list
+return response.result.list
 .reverse()
-.map((c) => ({
-openTime: Number(c[0]),
-open: Number(c[1]),
-high: Number(c[2]),
-low: Number(c[3]),
-close: Number(c[4]),
-volume: Number(c[5]),
-closeTime: Number(c[0])
+.map((item) => ({
+openTime: Number(item[0]),
+open: Number(item[1]),
+high: Number(item[2]),
+low: Number(item[3]),
+close: Number(item[4]),
+volume: Number(item[5]),
+closeTime: Number(item[0])
 }));
 }
 
@@ -80,7 +71,7 @@ interval,
 limit
 );
 
-return candles.map((c) => c.close);
+return candles.map((candle) => candle.close);
 }
 
 module.exports = {
