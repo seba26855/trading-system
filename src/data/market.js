@@ -10,17 +10,9 @@ let body = "";
       body += chunk;
     });
 
-res.on("end", () => {
-console.log("BYBIT RESPONSE:");
-console.log(body);
-
-try {
-resolve(JSON.parse(body));
-} catch (error) {
-reject(error);
-}
-});
-
+    res.on("end", () => {
+      resolve(body);
+    });
   })
   .on("error", (error) => {
     reject(error);
@@ -41,27 +33,12 @@ const url =
 `&interval=${interval}` +
 `&limit=${limit}`;
 
-const response = await request(url);
+const raw = await request(url);
 
-if (
-!response ||
-!response.result ||
-!Array.isArray(response.result.list)
-) {
-throw new Error("Invalid Bybit response");
-}
+console.log("BYBIT RAW RESPONSE:");
+console.log(raw);
 
-return response.result.list
-.reverse()
-.map((item) => ({
-openTime: Number(item[0]),
-open: Number(item[1]),
-high: Number(item[2]),
-low: Number(item[3]),
-close: Number(item[4]),
-volume: Number(item[5]),
-closeTime: Number(item[0])
-}));
+throw new Error(raw);
 }
 
 async function getCloses(
