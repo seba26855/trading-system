@@ -28,23 +28,37 @@ symbol = "BTCUSDT",
 interval = "5m",
 limit = 200
 ) {
-const pair = "XBTUSDT";
+const pairMap = {
+BTCUSDT: "XBTUSDT",
+ETHUSDT: "ETHUSDT",
+SOLUSDT: "SOLUSDT",
+XRPUSDT: "XRPUSDT",
+ADAUSDT: "ADAUSDT"
+};
+
+const pair =
+pairMap[symbol] ||
+"XBTUSDT";
 
 const url =
 `https://api.kraken.com/0/public/OHLC` +
 `?pair=${pair}` +
 `&interval=5`;
 
-const response = await request(url);
+const response =
+await request(url);
 
 if (
 !response ||
 !response.result
 ) {
-throw new Error("Invalid Kraken response");
+throw new Error(
+"Invalid Kraken response"
+);
 }
 
-const key = Object.keys(
+const key =
+Object.keys(
 response.result
 ).find(
 (k) => k !== "last"
@@ -63,18 +77,25 @@ response.result[key]
 return rows.map((c) => ({
 openTime:
 Number(c[0]) * 1000,
+
 open:
-Number(c[1]),
+  Number(c[1]),
+
 high:
-Number(c[2]),
+  Number(c[2]),
+
 low:
-Number(c[3]),
+  Number(c[3]),
+
 close:
-Number(c[4]),
+  Number(c[4]),
+
 volume:
-Number(c[6]),
+  Number(c[6]),
+
 closeTime:
-Number(c[0]) * 1000
+  Number(c[0]) * 1000
+
 }));
 }
 
