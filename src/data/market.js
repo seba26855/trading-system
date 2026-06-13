@@ -10,13 +10,17 @@ let body = "";
       body += chunk;
     });
 
-    res.on("end", () => {
-      try {
-        resolve(JSON.parse(body));
-      } catch (error) {
-        reject(error);
-      }
-    });
+res.on("end", () => {
+console.log("BYBIT RESPONSE:");
+console.log(body);
+
+try {
+resolve(JSON.parse(body));
+} catch (error) {
+reject(error);
+}
+});
+
   })
   .on("error", (error) => {
     reject(error);
