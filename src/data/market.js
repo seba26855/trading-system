@@ -4,55 +4,95 @@ function request(url) {
 return new Promise((resolve, reject) => {
 https
 .get(url, (res) => {
-let body = "";
+let data = "";
 
     res.on("data", (chunk) => {
-      body += chunk;
+      data += chunk;
     });
 
     res.on("end", () => {
-      resolve(body);
+      try {
+        resolve(JSON.parse(data));
+      } catch (err) {
+        reject(err);
+      }
     });
   })
-  .on("error", (error) => {
-    reject(error);
-  });
+  .on("error", reject);
 
 });
 }
 
 async function getCandles(
 symbol = "BTCUSDT",
-interval = "5",
+interval = "5m",
 limit = 200
 ) {
+const pair = "XBTUSDT";
+
 const url =
-"https://api.bybit.com/v5/market/kline" +
-`?category=linear` +
-`&symbol=${symbol}` +
-`&interval=${interval}` +
-`&limit=${limit}`;
+`https://api.kraken.com/0/public/OHLC` +
+`?pair=${pair}` +
+`&interval=5`;
 
-const raw = await request(url);
+const response = await request(url);
 
-console.log("BYBIT RAW RESPONSE:");
-console.log(raw);
+if (
+!response ||
+!response.result
+) {
+throw new Error("Invalid Kraken response");
+}
 
-throw new Error(raw);
+const key = Object.keys(
+response.result
+).find(
+(k) => k !== "last"
+);
+
+if (!key) {
+throw new Error(
+"Kraken pair not found"
+);
+}
+
+const rows =
+response.result[key]
+.slice(-limit);
+
+return rows.map((c) => ({
+openTime:
+Number(c[0]) * 1000,
+open:
+Number(c[1]),
+high:
+Number(c[2]),
+low:
+Number(c[3]),
+close:
+Number(c[4]),
+volume:
+Number(c[6]),
+closeTime:
+Number(c[0]) * 1000
+}));
 }
 
 async function getCloses(
 symbol = "BTCUSDT",
-interval = "5",
+interval = "5m",
 limit = 200
 ) {
-const candles = await getCandles(
+const candles =
+await getCandles(
 symbol,
 interval,
 limit
 );
 
-return candles.map((candle) => candle.close);
+return candles.map(
+(c) => c.close
+);
 }
 
 module.exports = {
